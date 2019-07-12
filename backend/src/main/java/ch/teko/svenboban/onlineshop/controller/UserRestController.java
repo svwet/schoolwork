@@ -9,12 +9,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +26,7 @@ import java.util.*;
 /**
  * @author: Petrovic Boban
  **/
+@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
 @RestController
 public class UserRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);
@@ -33,11 +34,13 @@ public class UserRestController {
 
     private final UserRepository userRepository;
     private final OnetimePasswordRepository onetimePasswordRepository;
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public UserRestController(UserRepository userRepository, OnetimePasswordRepository onetimePasswordRepository) {
+    public UserRestController(UserRepository userRepository, OnetimePasswordRepository onetimePasswordRepository, RestTemplate restTemplate) {
         this.userRepository = userRepository;
         this.onetimePasswordRepository = onetimePasswordRepository;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/postRequestTest")
@@ -53,7 +56,7 @@ public class UserRestController {
         try {
             json = new ObjectMapper().writeValueAsString(requestBody);
             HttpEntity<String> entity = new HttpEntity<>(json, headers);
-            ResponseEntity<String> response = restTemplate().postForEntity(URL, entity, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(URL, entity, String.class);
             return response.getBody();
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
@@ -94,11 +97,6 @@ public class UserRestController {
         cal.setTime(new Date());
         cal.add(Calendar.SECOND, -5);
         return cal.getTime();
-    }
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
     }
 
 }

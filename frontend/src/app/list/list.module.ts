@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 
 import { ListPage } from './list.page';
+import {ListService} from "./list.service";
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { ListPage } from './list.page';
       }
     ])
   ],
+  providers:[ListService],
   declarations: [ListPage]
 })
 export class ListPageModule {}
