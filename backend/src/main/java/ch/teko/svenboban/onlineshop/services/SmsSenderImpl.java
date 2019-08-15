@@ -13,8 +13,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author svenwetter
+ * @author sven.wetter@edu.teko.ch
  */
+
 @Service
 public class SmsSenderImpl implements SmsSender {
     private static final String URL = "https://messagingproxy.swisscom.ch:4300/rest/1.0.0/submit_sm/87749";

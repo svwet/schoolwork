@@ -1,6 +1,5 @@
 package ch.teko.svenboban.onlineshop.controller;
 
-import ch.teko.svenboban.onlineshop.model.OnetimePassword;
 import ch.teko.svenboban.onlineshop.model.User;
 import ch.teko.svenboban.onlineshop.repository.OnetimePasswordRepository;
 import ch.teko.svenboban.onlineshop.repository.UserRepository;
@@ -14,13 +13,13 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -39,6 +38,7 @@ public class UserRestController {
         this.userRepository = userRepository;
         this.onetimePasswordRepository = onetimePasswordRepository;
     }
+
 
     @GetMapping("/postRequestTest")
     public String send() {
@@ -60,6 +60,7 @@ public class UserRestController {
         }
     }
 
+
     @GetMapping("/users")
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -70,6 +71,7 @@ public class UserRestController {
         return userRepository.findUserByPid(pid);
     }
 
+    /**
     @Scheduled(fixedDelay = 1000)
     public void checkAndRemoveOtps() {
         LOGGER.info("checking otp's={}", new Date());
@@ -87,7 +89,7 @@ public class UserRestController {
                 LOGGER.info("added entry={}", otp.getId());
             }
         });
-    }
+    } **/
 
     private Date getNowMinus5Seconds() {
         Calendar cal = Calendar.getInstance();
