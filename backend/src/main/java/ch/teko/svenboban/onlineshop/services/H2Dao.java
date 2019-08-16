@@ -21,6 +21,10 @@ public class H2Dao {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS "
                 + "USERS(username VARCHAR(255) PRIMARY KEY, password VARCHAR(255), enabled BOOLEAN, mobile INTEGER);");
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS "
-                +"authorities(username VARCHAR(255), authority VARCHAR(255), foreign key (username) references users(username));");
+                +"authorities(username VARCHAR(255), authority VARCHAR(255), foreign key (username) references USERS(username));");
+        jdbcTemplate.execute("INSERT INTO USERS "
+                + "values ('test', '$2a$12$7XtSOFywyfyuS4Zgx3o8xOl96GNlulPWMgndn86/fbi/8p3ovlCGm', TRUE, 4175)");
+        jdbcTemplate.execute("INSERT INTO authorities "
+                + "values ('test', 'ADMIN')");
     }
 }
