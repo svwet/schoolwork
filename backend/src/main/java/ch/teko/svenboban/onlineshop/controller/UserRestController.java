@@ -26,7 +26,7 @@ import java.util.*;
 /**
  * @author: Petrovic Boban
  **/
-@CrossOrigin(origins = "http://localhost:8080", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class UserRestController {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserRestController.class);

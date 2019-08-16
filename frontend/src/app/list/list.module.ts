@@ -1,11 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
-import { RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
+import {IonicModule} from '@ionic/angular';
+import {RouterModule} from '@angular/router';
 
-import { ListPage } from './list.page';
+import {ListPage} from './list.page';
 import {ListService} from "./list.service";
+import {ModalPage} from "./modal.page";
 
 @NgModule({
   imports: [
@@ -18,8 +19,10 @@ import {ListService} from "./list.service";
         component: ListPage
       }
     ])
+  ], entryComponents: [
+    ModalPage,
   ],
   providers:[ListService],
-  declarations: [ListPage]
+  declarations: [ListPage, ModalPage]
 })
 export class ListPageModule {}
