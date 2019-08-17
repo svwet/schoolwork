@@ -3,7 +3,7 @@ import {ListService} from "./list.service";
 import {User} from "./user";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
-import {ModalController, ToastController} from "@ionic/angular";
+import {ModalController, NavController, ToastController} from "@ionic/angular";
 import {Product} from "./product";
 import {ModalPage} from "./modal.page";
 
@@ -32,20 +32,20 @@ export class ListPage implements OnInit {
         description: "test",
         name: "ssss",
         price: 23.25
-    }, {id: 1, description: "test", name: "macbook", price: 23.25}, {
-        id: 1,
+    }, {id: 3323, description: "test", name: "macbook", price: 23.25}, {
+        id: 123,
         description: "test",
         name: "fffdsfdf",
         price: 23.25
-    }, {id: 1, description: "test", name: "macbook", price: 23.25}, {
-        id: 1,
+    }, {id: 99, description: "test", name: "macbook", price: 23.25}, {
+        id: 2,
         description: "test",
         name: "dslkfjs",
         price: 23.25
     }];
 
 
-    constructor(public listService: ListService, public toastController: ToastController, public modalController: ModalController) {
+    constructor(public listService: ListService, public toastController: ToastController, public modalController: ModalController, public navCtrl: NavController) {
     }
 
     async presentModal() {
@@ -82,5 +82,11 @@ export class ListPage implements OnInit {
     addToCart(item){
         item.quantityInCart += 1;
         this.itemsInCart.push(item);
+    }
+
+    openProduct(product: Product) {
+        this.addToCart(product);
+        this.navCtrl.navigateRoot('/product/'+product.id);
+
     }
 }
