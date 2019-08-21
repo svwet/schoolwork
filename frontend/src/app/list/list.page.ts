@@ -1,51 +1,21 @@
 import {Component, OnInit} from '@angular/core';
-import {ListService} from "./list.service";
-import {User} from "./user";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {ModalController, NavController, ToastController} from "@ionic/angular";
-import {Product} from "./product";
+import {Product} from "../commons/product";
 import {ModalPage} from "./modal.page";
+import {ProductService} from "../commons/product.service";
 
 @Component({
     selector: 'app-list',
-    templateUrl: 'list.page.html',
-    styleUrls: ['list.page.scss']
+    templateUrl: 'list.page.html'
 })
 export class ListPage implements OnInit {
     items: Product[] = [];
     itemsInCart: Product[] = [];
+    public products: Product[];
 
-    private users: User[];
-    public products: Product[] = [{id: 1, description: "test", name: "macbook", price: 23.25}, {
-        id: 1,
-        description: "test",
-        name: "hp envy",
-        price: 255.95
-    }, {id: 1, description: "test", name: "macbook", price: 23.25}, {
-        id: 1,
-        description: "test",
-        name: "asdf",
-        price: 23.25
-    }, {id: 1, description: "test", name: "macbook", price: 23.25}, {
-        id: 1,
-        description: "test",
-        name: "ssss",
-        price: 23.25
-    }, {id: 3323, description: "test", name: "macbook", price: 23.25}, {
-        id: 123,
-        description: "test",
-        name: "fffdsfdf",
-        price: 23.25
-    }, {id: 99, description: "test", name: "macbook", price: 23.25}, {
-        id: 2,
-        description: "test",
-        name: "dslkfjs",
-        price: 23.25
-    }];
-
-
-    constructor(public listService: ListService, public toastController: ToastController, public modalController: ModalController, public navCtrl: NavController) {
+    constructor(public productService: ProductService, public toastController: ToastController, public modalController: ModalController, public navCtrl: NavController) {
     }
 
     async presentModal() {
@@ -60,15 +30,8 @@ export class ListPage implements OnInit {
 
 
     ngOnInit() {
-        this.listService.getGoodBeers().pipe(
-            catchError(err => {
-                this.presentToast(err);
-                return of([]);
-            })
-        ).subscribe(
-            value => this.users = value
-        );
-        this.listService.getGoodBeers();
+        this.subscribeGetProducts();
+        this.productService.getProducts();
     }
 
     async presentToast(msg: string) {
@@ -79,14 +42,24 @@ export class ListPage implements OnInit {
         await toast.present();
     }
 
-    addToCart(item){
+    addToCart(item) {
         item.quantityInCart += 1;
         this.itemsInCart.push(item);
     }
 
     openProduct(product: Product) {
         this.addToCart(product);
-        this.navCtrl.navigateRoot('/product/'+product.id);
+        this.navCtrl.navigateRoot('/product/' + product.id);
+    }
 
+    private subscribeGetProducts() {
+        this.productService.getProducts().pipe(
+            catchError(err => {
+                this.presentToast(err);
+                return of([]);
+            })
+        ).subscribe(
+            value => this.products = value
+        );
     }
 }

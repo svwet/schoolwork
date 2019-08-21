@@ -5,24 +5,24 @@ import {IonicModule} from '@ionic/angular';
 import {RouterModule} from '@angular/router';
 
 import {ListPage} from './list.page';
-import {ListService} from "./list.service";
 import {ModalPage} from "./modal.page";
+import {CommonsModule} from "../commons/commons.module";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    RouterModule.forChild([
-      {
-        path: '',
-        component: ListPage
-      }
-    ])
-  ], entryComponents: [
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        CommonsModule,
+        RouterModule.forChild([
+            {
+                path: '',
+                component: ListPage
+            }
+        ])
+    ], entryComponents: [
     ModalPage,
   ],
-  providers:[ListService],
   declarations: [ListPage, ModalPage]
 })
 export class ListPageModule {}
