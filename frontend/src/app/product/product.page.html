@@ -1,14 +1,40 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="list"></ion-back-button>
-    </ion-buttons>
-    <ion-title>Product - {{productId}}</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="list"></ion-back-button>
+        </ion-buttons>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <p>Name: {{product?.name}}</p>
-  <p>Description: {{product?.description}}</p>
-  <p>Price: {{product?.price}}</p>
+    <ion-card>
+        <ion-card-header>
+            <ion-card-subtitle>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star"></ion-icon>
+                <ion-icon name="star-half"></ion-icon>
+                (34)
+            </ion-card-subtitle>
+            <ion-card-title>{{product?.name}} - <small>{{product?.price}} Chf</small></ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+            {{product?.description}}
+        </ion-card-content>
+
+        <ion-slides pager="true">
+            <ion-slide>
+                <img src="https://static.digitecgalaxus.ch/Files/8/2/4/9/6/5/5/Braves_Pike_Silver_CoreSet_Front_win10_NT.jpg?fit=inside%7C828:414&output-format=progressive-jpeg">
+            </ion-slide>
+            <ion-slide>
+                <img src="https://static.digitecgalaxus.ch/Files/8/2/4/9/6/4/4/Braves_Pike_Silver_CoreSet_Front_Branded_NT.jpg?fit=inside%7C828:414&output-format=progressive-jpeg">
+            </ion-slide>
+            <ion-slide>
+                <img src="https://static.digitecgalaxus.ch/Files/8/2/4/9/6/5/4/Braves_Pike_Silver_CoreSet_Front_Right_Branded_NT.jpg?fit=inside%7C828:414&output-format=progressive-jpeg">
+            </ion-slide>
+        </ion-slides>
+
+    </ion-card>
 </ion-content>

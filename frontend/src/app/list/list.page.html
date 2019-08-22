@@ -6,18 +6,17 @@
                 <ion-icon name="cart"></ion-icon>
             </ion-button>
         </ion-buttons>
-        <ion-title>Alle Produkte ({{products?.length}})</ion-title>
+
+        <ion-title>{{products?.length}} Produkte</ion-title>
     </ion-toolbar>
 
 </ion-header>
 
 <ion-content>
-    <ion-card tappable *ngFor="let product of products" style="display: inline-block" (click)="openProduct(product)">
+    <ion-card tappable *ngFor="let product of products" style="display: inline-block; width: 200px" (click)="openProduct(product)">
         <ion-card-header>
+            <ion-card-subtitle style="color: #ff4648"><b>{{product.price}}</b> Chf</ion-card-subtitle>
             <ion-card-title>{{product.name}}</ion-card-title>
         </ion-card-header>
-        <ion-card-content>
-            Price: {{product.price}}
-        </ion-card-content>
     </ion-card>
 </ion-content>
