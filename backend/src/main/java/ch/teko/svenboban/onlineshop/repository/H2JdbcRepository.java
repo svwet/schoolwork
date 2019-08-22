@@ -5,21 +5,21 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
-
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-
 import org.springframework.web.client.RestTemplate;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+/**
+ * @author sven.wetter@edu.teko.ch
+ */
 
 @Repository
 public class H2JdbcRepository {
@@ -28,31 +28,40 @@ public class H2JdbcRepository {
     private JdbcTemplate jdbcTemplate;
     private static final String URL = "https://jsonplaceholder.typicode.com/posts";
 
-
+    /**
+     * Collects all data from products table
+     * @return returns the value as json
+     */
     public String getProducts() {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        JSONArray jsonArray = new JSONArray();
         String sqlquery = "select * from products";
-        jsonArray = getDataH2(sqlquery);
 
-        return createJson(jsonArray, headers);
+        return createJson(getDataH2(sqlquery), headers);
     }
 
+    /**
+     * Collect the data of a single products
+     * @param id the id of the products
+     * @return returns the values as json
+     */
     public String getProductsById(String id) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String sqlquery = "select * from products where id = " + id + "";
-        JSONArray jsonArray = new JSONArray();
-        jsonArray = getDataH2(sqlquery);
 
-        return createJson(jsonArray, headers);
+        return createJson(getDataH2(sqlquery), headers);
     }
 
     public void writeCartToDb() {
 
     }
 
+    /**
+     * Collecting data from db and convert it into jsonarray
+     * @param sqlquery the sql statment in string format
+     * @return returns the data as jsonarray
+     */
     private JSONArray getDataH2(String sqlquery) {
         JSONArray jsonArray = new JSONArray();
         jdbcTemplate.query(sqlquery, new ResultSetExtractor<ResultSet>() {
@@ -80,6 +89,12 @@ public class H2JdbcRepository {
         return jsonArray;
     }
 
+    /**
+     * Mix up the array and http header to create valid http json
+     * @param jsonArray the data as jsonarray format
+     * @param headers the http header
+     * @return return the mixed response body
+     */
     private String createJson(JSONArray jsonArray, HttpHeaders headers) {
         try {
             HttpEntity<String> entity = new HttpEntity<String>(jsonArray.toString(), headers);

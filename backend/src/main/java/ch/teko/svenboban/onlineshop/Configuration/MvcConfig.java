@@ -3,7 +3,11 @@ package ch.teko.svenboban.onlineshop.Configuration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+/**
+ * @author sven.wetter@edu.teko.ch
+ */
+
 
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {

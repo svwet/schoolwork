@@ -6,7 +6,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,6 +37,10 @@ public class SmsSenderImpl implements SmsSender {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * Sends a Short Message through Swisscom Large Account.
+     * @return returns json response
+     */
     public String send() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
