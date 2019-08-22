@@ -28,8 +28,8 @@ public class SmsSenderImpl implements SmsSender {
     private static final String DESTINATION_ADDR_VALUE = "0798464541";
     private static final String USERNAME = "87749";
     private static final String ALPHANUMERIC = "TEKO";
-    private static final String TEST_MESSAGE = "Test message SPRING REST";
     private static final InetSocketAddress HOST = new InetSocketAddress("217.192.8.32", 4300);
+    private String message = null;
 
     private final RestTemplate restTemplate;
 
@@ -49,9 +49,13 @@ public class SmsSenderImpl implements SmsSender {
         data.put(DESTINATION_ADDR, DESTINATION_ADDR_VALUE);
         data.put(SOURCE_ADDR, ALPHANUMERIC);
         data.put(SOURCE_ADDR_TON, SOURCE_ADDR_TON_VALUE);
-        data.put(SHORT_MESSAGE, TEST_MESSAGE);
+        data.put(SHORT_MESSAGE, message);
 
         HttpEntity<Map> request = new HttpEntity<>(data, headers);
         return restTemplate.postForObject(URL, request, String.class);
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

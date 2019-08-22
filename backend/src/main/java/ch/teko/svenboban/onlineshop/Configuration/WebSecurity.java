@@ -31,37 +31,30 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder(12);
     }
 
-    @Autowired
-    private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(jdbcTemplate.getDataSource()).usersByUsernameQuery(
                 "select username, password, 'TRUE' as enabled from users where username= ?").authoritiesByUsernameQuery(
-                        "select username, authority from authorities where username= ?").passwordEncoder(passwordEncoder());
-
+                "select username, authority from authorities where username= ?").passwordEncoder(passwordEncoder());
     }
 
     @Override
-    protected void configure(HttpSecurity http)  throws Exception {
-
+    protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/*").hasAnyRole().anyRequest().authenticated()
+                .antMatchers("/login").hasAnyRole().anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .authenticationDetailsSource(authenticationDetailsSource)
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll();
-
-
-        http.authorizeRequests().antMatchers("/*").authenticated().and().httpBasic();
+        http.headers().frameOptions().disable();
     }
 
     @Bean
