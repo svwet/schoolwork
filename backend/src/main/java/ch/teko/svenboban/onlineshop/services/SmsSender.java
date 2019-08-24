@@ -1,8 +1,9 @@
 package ch.teko.svenboban.onlineshop.services;
 
 /**
- * @author svenwetter
+ * @author sven.wetter@edu.teko.ch
  */
+
 public interface SmsSender {
     String send();
 }
