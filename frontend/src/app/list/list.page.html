@@ -13,7 +13,9 @@
 </ion-header>
 
 <ion-content>
-    <ion-card tappable *ngFor="let product of products" style="display: inline-block; width: 200px" (click)="openProduct(product)">
+    <ion-card (click)="openProduct(product)" *ngFor="let product of products"
+              style="display: inline-block; width: 200px"
+              tappable>
         <ion-card-header>
             <ion-card-subtitle style="color: #ff4648"><b>{{product.price}}</b> Chf</ion-card-subtitle>
             <ion-card-title>{{product.name}}</ion-card-title>

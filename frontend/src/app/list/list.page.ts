@@ -2,54 +2,38 @@ import {Component, OnInit} from '@angular/core';
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {ModalController, NavController, ToastController} from "@ionic/angular";
-import {Product} from "../commons/product";
-import {ModalPage} from "./modal.page";
+import {Product} from "../product/product";
 import {ProductService} from "../commons/product.service";
+import {CartComponent} from "../cart/cart.component";
+import {BaseComponent} from "../commons/base.component";
 
 @Component({
     selector: 'app-list',
     templateUrl: 'list.page.html'
 })
-export class ListPage implements OnInit {
+export class ListPage extends BaseComponent implements OnInit {
     items: Product[] = [];
     itemsInCart: Product[] = [];
     public products: Product[];
 
-    constructor(public productService: ProductService, public toastController: ToastController, public modalController: ModalController, public navCtrl: NavController) {
+    constructor(public productService: ProductService, public modalController: ModalController, public navCtrl: NavController, protected toastController: ToastController,) {
+        super(toastController);
     }
-
-    async presentModal() {
-        const modal = await this.modalController.create({
-            component: ModalPage,
-            componentProps: {
-                'itemsInCart': this.itemsInCart
-            }
-        });
-        return await modal.present();
-    }
-
 
     ngOnInit() {
         this.subscribeGetProducts();
         this.productService.getProducts();
     }
 
-    async presentToast(msg: string) {
-        const toast = await this.toastController.create({
-            message: msg,
-            duration: 2000
-        });
-        await toast.present();
-    }
-
-    addToCart(item) {
-        item.quantityInCart += 1;
-        this.itemsInCart.push(item);
-    }
-
     openProduct(product: Product) {
-        this.addToCart(product);
         this.navCtrl.navigateRoot('/product/' + product.id);
+    }
+
+    async presentModal() {
+        const modal = await this.modalController.create({
+            component: CartComponent,
+        });
+        return await modal.present();
     }
 
     private subscribeGetProducts() {

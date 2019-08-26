@@ -3,44 +3,43 @@ import {ActivatedRoute} from "@angular/router";
 import {ProductService} from "../commons/product.service";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
-import {Product} from "../commons/product";
+import {Product} from "./product";
 import {ToastController} from "@ionic/angular";
+import {BaseComponent} from "../commons/base.component";
+import {CartService} from "../commons/cart.service";
 
 @Component({
-  selector: 'app-productdetails',
-  templateUrl: './product.page.html',
-  styleUrls: ['./product.page.scss'],
+    selector: 'app-productdetails',
+    templateUrl: './product.page.html',
+    styleUrls: ['./product.page.scss'],
 })
-export class ProductPage implements OnInit {
-  public productId: string;
-  public product: Product;
+export class ProductPage extends BaseComponent implements OnInit {
+    public productId: string;
+    public product: Product;
 
-  constructor(private activatedRoute: ActivatedRoute,  public toastController: ToastController, private productService: ProductService) { }
+    constructor(private activatedRoute: ActivatedRoute, protected toastController: ToastController, private productService: ProductService, private cartService: CartService) {
+        super(toastController)
+    }
 
-  ngOnInit() {
-    this.productId = this.activatedRoute.snapshot.paramMap.get('productId');
-    this.subscribeGetProductById();
-    this.productService.getProductById(this.productId);
-  }
+    ngOnInit() {
+        this.productId = this.activatedRoute.snapshot.paramMap.get('productId');
+        this.subscribeGetProductById();
+        this.productService.getProductById(this.productId);
+    }
 
+    addToCart(item) {
+        this.cartService.addToCart(item);
+    }
 
-  private subscribeGetProductById() {
-    this.productService.getProductById(this.productId).pipe(
-        catchError(err => {
-          this.presentToast(err.error.message);
-          return of<Product>();
-        })
-    ).subscribe(
-        value => this.product = value
-    );
-  }
-
-  async presentToast(msg: string) {
-    const toast = await this.toastController.create({
-      message: msg,
-      duration: 2000
-    });
-    await toast.present();
-  }
+    private subscribeGetProductById() {
+        this.productService.getProductById(this.productId).pipe(
+            catchError(err => {
+                this.presentToast(err.error.message);
+                return of<Product>();
+            })
+        ).subscribe(
+            value => this.product = value
+        );
+    }
 }
 

@@ -5,8 +5,8 @@ import {IonicModule} from '@ionic/angular';
 import {RouterModule} from '@angular/router';
 
 import {ListPage} from './list.page';
-import {ModalPage} from "./modal.page";
 import {CommonsModule} from "../commons/commons.module";
+import {CartComponent} from "../cart/cart.component";
 
 @NgModule({
     imports: [
@@ -21,8 +21,9 @@ import {CommonsModule} from "../commons/commons.module";
             }
         ])
     ], entryComponents: [
-    ModalPage,
-  ],
-  declarations: [ListPage, ModalPage]
+        CartComponent,
+    ],
+    declarations: [ListPage, CartComponent]
 })
-export class ListPageModule {}
+export class ListPageModule {
+}

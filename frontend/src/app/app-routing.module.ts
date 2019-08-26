@@ -11,14 +11,15 @@ const routes: Routes = [
         path: 'list',
         loadChildren: './list/list.module#ListPageModule'
     },
-    {   path: 'product/:productId',
+    {
+        path: 'product/:productId',
         loadChildren: './product/product.module#ProductdetailsPageModule'
     }
 ];
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
+        RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules, useHash: true})
     ],
     exports: [RouterModule]
 })
