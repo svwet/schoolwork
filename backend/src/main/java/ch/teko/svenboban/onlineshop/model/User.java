@@ -1,53 +1,49 @@
 package ch.teko.svenboban.onlineshop.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
- * @author: Petrovic Boban
+ * @author: sven.wetter@edu.teko.ch
  **/
-@Entity
+@Entity(name = "USER")
 public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
-    private String pid;
-    private Long number;
+    @Column(name = "USER_ID")
+    private int userId;
 
-    public User() {
-        super();
+    @Column(name = "USERNAME")
+    private String username;
+
+    @Column(name = "MOBILE")
+    private Long mobile;
+
+    public int getUserId() {
+        return userId;
     }
 
-    public User(Long id, String pid, Long number) {
-        super();
-        this.id = id;
-        this.pid = pid;
-        this.number = number;
+    public User setUserId(int userId) {
+        this.userId = userId;
+        return this;
     }
 
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public User setUsername(String mail) {
+        this.username = mail;
+        return this;
     }
 
-    public String getPid() {
-        return pid;
+    public Long getMobile() {
+        return mobile;
     }
 
-    public void setPid(String pid) {
-        this.pid = pid;
-    }
-
-    public Long getNumber() {
-        return number;
-    }
-
-    public void setNumber(Long number) {
-        this.number = number;
+    public User setMobile(Long mobile) {
+        this.mobile = mobile;
+        return this;
     }
 }
+

@@ -21,19 +21,18 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private  JdbcTemplate jdbcTemplate;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 
-
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication().dataSource(jdbcTemplate.getDataSource()).usersByUsernameQuery(
-                "select username, password, 'TRUE' as enabled from users where username= ?").authoritiesByUsernameQuery(
-                "select username, authority from authorities where username= ?").passwordEncoder(passwordEncoder());
+                "select  username, password, 'TRUE' as active from user where username= ?").authoritiesByUsernameQuery(
+                "select username, authority from authority where username= ?").passwordEncoder(passwordEncoder());
     }
 
     @Override

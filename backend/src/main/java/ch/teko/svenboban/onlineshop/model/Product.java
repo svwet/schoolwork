@@ -1,20 +1,31 @@
 package ch.teko.svenboban.onlineshop.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 /**
- * @author: Petrovic Boban
- **/
+ * @author sven.wetter@edu.teko.ch
+ */
+
+@Entity
 public class Product {
-    private int id;
+    @Id
+    @GeneratedValue
+    @Column(name = "PRODUCT_ID")
+    private int productId;
     private String name;
-    private String description;
+    private String shortDescription;
+    private String longDescription;
     private double price;
 
-    public int getId() {
-        return id;
+    public int getProductId() {
+        return productId;
     }
 
-    public Product setId(int id) {
-        this.id = id;
+    public Product setProductId(int productId) {
+        this.productId = productId;
         return this;
     }
 
@@ -27,12 +38,21 @@ public class Product {
         return this;
     }
 
-    public String getDescription() {
-        return description;
+    public String getShortDescription() {
+        return shortDescription;
     }
 
-    public Product setDescription(String description) {
-        this.description = description;
+    public Product setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
+        return this;
+    }
+
+    public String getLongDescription() {
+        return longDescription;
+    }
+
+    public Product setLongDescription(String longDescription) {
+        this.longDescription = longDescription;
         return this;
     }
 
