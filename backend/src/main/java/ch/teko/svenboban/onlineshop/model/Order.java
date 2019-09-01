@@ -12,7 +12,6 @@ import javax.persistence.Id;
 public class Order {
     @Id
     @GeneratedValue
-    @Column(name = "Order")
     private int orderId;
     private int userId;
     private int productId;

@@ -35,6 +35,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 "select username, authority from authority where username= ?").passwordEncoder(passwordEncoder());
     }
 
+    /**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -48,6 +49,11 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll();
         http.headers().frameOptions().disable();
+    }**/
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().authorizeRequests().anyRequest().permitAll();
     }
 
     @Bean

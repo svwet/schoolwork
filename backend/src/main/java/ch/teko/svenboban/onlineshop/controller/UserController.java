@@ -23,7 +23,6 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/getUser")
     public int getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();

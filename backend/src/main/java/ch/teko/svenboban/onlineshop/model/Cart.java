@@ -7,24 +7,18 @@ import javax.persistence.Id;
 /**
  * @author sven.wetter@edu.teko.ch
  */
-@Entity
+@Entity(name = "CART")
 public class Cart {
     @Id
     @GeneratedValue
-    @Column(name = "CART_ID")
-    private int cartId;
+    @Column(name = "USER_ID")
     private int userId;
+
+    @Column(name = "PRODUCT_ID")
     private int productId;
+
+    @Column(name = "Count")
     private int count;
-
-    public int getCartId() {
-        return cartId;
-    }
-
-    public Cart setCartId(int cartId) {
-        this.cartId = cartId;
-        return this;
-    }
 
     public int getUserId() {
         return userId;
