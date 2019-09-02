@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author sven.wetter@edu.teko.ch
@@ -33,4 +35,12 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Query(value = "select count from CART WHERE USER_ID =:userId and PRODUCT_ID=:productId", nativeQuery = true)
     Integer checkCart(@Param("userId")int userId, @Param("productId")int productId);
 
+    @Modifying
+    @Transactional
+    @Query(value = "insert into ORDERS(USER_ID, PRODUCT_ID, COUNT) values(:userId, :productId, :count)", nativeQuery = true)
+    int checkout(@Param("userId")int userId, @Param("productId")int productId, @Param("count")int count);
+
+    List<Cart> getCartByUserId(int userId);
+
+    //int deleteAllByUserId();
 }
