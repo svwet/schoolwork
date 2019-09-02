@@ -19,17 +19,39 @@ public class CartRestController {
         this.cartRepository = cartRepository;
     }
 
-    @RequestMapping(value="/posttesting", method=RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value="/addToCart", method=RequestMethod.POST, consumes = "application/json")
     @ResponseBody
-    public Cart saveCart(@RequestBody ArrayList<Cart> cart) {
-    for(int i=0;i<cart.size();i++) {
-
-        System.out.println("UserID:" + cart.get(i).getUserId()); //Debug Only
-        System.out.println("ProductID:" + cart.get(i).getProductId()); //Debug Only
-        System.out.println("Count:" + cart.get(i).getCount()); //Debug Only
-        cartRepository.saveAll(cart.get(i).getUserId(), cart.get(i).getProductId(), cart.get(i).getCount());
+    public void saveCart(@RequestBody ArrayList<Cart> cart) {
+        Integer valueCheck;
+            try {
+                for (int i = 0; i < cart.size(); i++) {
+                    valueCheck = cartRepository.checkCart(cart.get(i).getUserId(), cart.get(i).getProductId());
+                    if (valueCheck == null) {
+                        cartRepository.saveAll(cart.get(i).getUserId(), cart.get(i).getProductId(), 1);
+                    } else {
+                        cartRepository.updateAdd(cart.get(i).getUserId(), cart.get(i).getProductId());
+                    }
+                }
+            }catch(Exception e){
+                System.out.println(e);
+            }
     }
-        return null;
-    }
 
+    @RequestMapping(value = "/dropFromCart", method=RequestMethod.POST, consumes = "application/json")
+    @ResponseBody
+    public void dropProductFromCart(@RequestBody ArrayList<Cart> cart) {
+        Integer valueCheck;
+        try {
+            for (int i = 0; i < cart.size(); i++) {
+                valueCheck = cartRepository.checkCart(cart.get(i).getUserId(), cart.get(i).getProductId());
+                if (valueCheck == null) {
+                    cartRepository.dropProductFromCart(cart.get(i).getUserId(), cart.get(i).getProductId(), 1);
+                } else {
+                    cartRepository.updateAdd(cart.get(i).getUserId(), cart.get(i).getProductId());
+                }
+            }
+        }catch(Exception e){
+            System.out.println(e);
+        }
+    }
 }
