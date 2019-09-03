@@ -2,24 +2,25 @@ package ch.teko.svenboban.onlineshop.controller;
 
 import ch.teko.svenboban.onlineshop.services.SmsSenderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
 
 /**
  * @author sven.wetter@edu.teko.ch
  */
-@RestController
-public class SmsRestController {
+@Controller
+public class SmsController {
 
     private final SmsSenderImpl sendSms;
 
     @Autowired
-    public SmsRestController(SmsSenderImpl sendSms) {
+    public SmsController(SmsSenderImpl sendSms) {
         this.sendSms = sendSms;
     }
 
-    @GetMapping("/sms")
-    public String testSms() {
-        return sendSms.send();
+    public void sendOrderSms(String destination, String message) {
+        sendSms.setDestination(destination);
+        sendSms.setMessage(message);
+        sendSms.send();
     }
+
 }
