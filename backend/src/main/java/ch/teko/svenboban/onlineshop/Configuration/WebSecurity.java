@@ -50,7 +50,8 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 .permitAll();
         http.headers().frameOptions().disable();
     }
-/**
+
+    /**
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().anyRequest().permitAll();

@@ -12,7 +12,7 @@ import javax.transaction.Transactional;
 /**
  * @author sven.wetter@edu.teko.ch
  */
-@Repository
+@Repository("RepoOrder")
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     @Modifying
     @Transactional

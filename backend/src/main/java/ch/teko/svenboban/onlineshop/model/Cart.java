@@ -9,11 +9,12 @@ import javax.persistence.Id;
  */
 @Entity(name = "CART")
 public class Cart {
-    @Id
+
     @GeneratedValue
     @Column(name = "USER_ID")
     private int userId;
 
+    @Id
     @Column(name = "PRODUCT_ID")
     private int productId;
 

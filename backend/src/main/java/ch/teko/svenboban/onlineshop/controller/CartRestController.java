@@ -4,6 +4,7 @@ import ch.teko.svenboban.onlineshop.model.Cart;
 import ch.teko.svenboban.onlineshop.repository.CartRepository;
 import ch.teko.svenboban.onlineshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,11 +19,11 @@ import java.util.List;
 public class CartRestController {
 
     CartRepository cartRepository;
+
+    @Autowired
+    @Qualifier("RepoOrder")
     OrderRepository orderRepository;
 
-    public CartRestController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
 
     @Autowired
     UserController userController;
@@ -70,7 +71,7 @@ public class CartRestController {
 
     @GetMapping("/checkout")
     public void checkout() {
-        List<Cart> cart;
+
         Integer orderId = null;
         try {
             orderId = orderRepository.getOrderId();
@@ -86,9 +87,10 @@ public class CartRestController {
 
         try {
             int user = userController.getCurrentUser();
-            cart = cartRepository.getCartByUserId(user);
+            List<Cart> cart = cartRepository.getAllByUserId(user);
             for (int i = 0; i < cart.size(); i++)
                 orderRepository.checkout(orderId, cart.get(i).getUserId(), cart.get(i).getProductId(), cart.get(i).getCount());
+
         } catch (Exception e) {
 
         }

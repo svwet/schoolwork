@@ -40,7 +40,7 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Query(value = "insert into ORDERS(USER_ID, PRODUCT_ID, COUNT) values(:userId, :productId, :count)", nativeQuery = true)
     int checkout(@Param("userId")int userId, @Param("productId")int productId, @Param("count")int count);
 
-    List<Cart> getCartByUserId(int userId);
+    List<Cart> getAllByUserId(int userId);
 
     //int deleteAllByUserId();
 }
