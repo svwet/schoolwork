@@ -24,11 +24,11 @@ public class SmsSenderImpl implements SmsSender {
     private static final String SOURCE_ADDR_TON = "source_addr_ton";
     private static final Integer SOURCE_ADDR_TON_VALUE = 5;
     private static final String SHORT_MESSAGE = "short_message";
-    private static final String DESTINATION_ADDR_VALUE = "0798464541";
     private static final String USERNAME = "87749";
     private static final String ALPHANUMERIC = "TEKO";
     private static final InetSocketAddress HOST = new InetSocketAddress("217.192.8.32", 4300);
-    private String message = null;
+    private String message;
+    private String destination;
 
     private final RestTemplate restTemplate;
 
@@ -41,7 +41,7 @@ public class SmsSenderImpl implements SmsSender {
      * Sends a Short Message through Swisscom Large Account.
      * @return returns json response
      */
-    public String send() {
+    public void send() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -49,16 +49,22 @@ public class SmsSenderImpl implements SmsSender {
         headers.setHost(HOST);
 
         Map<String, Object> data = new HashMap<>();
-        data.put(DESTINATION_ADDR, DESTINATION_ADDR_VALUE);
+        data.put(DESTINATION_ADDR, destination);
         data.put(SOURCE_ADDR, ALPHANUMERIC);
         data.put(SOURCE_ADDR_TON, SOURCE_ADDR_TON_VALUE);
         data.put(SHORT_MESSAGE, message);
 
         HttpEntity<Map> request = new HttpEntity<>(data, headers);
-        return restTemplate.postForObject(URL, request, String.class);
+        restTemplate.postForObject(URL, request, String.class);
     }
 
-    public void setMessage(String message) {
+    public SmsSenderImpl setMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    public SmsSenderImpl setDestination(String destination) {
+        this.destination = destination;
+        return this;
     }
 }

@@ -3,11 +3,13 @@ package ch.teko.svenboban.onlineshop.controller;
 import ch.teko.svenboban.onlineshop.model.Cart;
 import ch.teko.svenboban.onlineshop.repository.CartRepository;
 import ch.teko.svenboban.onlineshop.repository.OrderRepository;
+import ch.teko.svenboban.onlineshop.services.SmsSenderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public class CartRestController {
 
     @Autowired
     UserController userController;
+
+    @Autowired
+    SmsController smsController;
 
     @Autowired
     public CartRestController(CartRepository cartRepository) {
@@ -71,8 +76,8 @@ public class CartRestController {
 
     @GetMapping("/checkout")
     public void checkout() {
-
         Integer orderId = null;
+        int user = userController.getCurrentUser();
         try {
             orderId = orderRepository.getOrderId();
         } catch (Exception e) {
@@ -86,13 +91,14 @@ public class CartRestController {
         }
 
         try {
-            int user = userController.getCurrentUser();
             List<Cart> cart = cartRepository.getAllByUserId(user);
             for (int i = 0; i < cart.size(); i++)
                 orderRepository.checkout(orderId, cart.get(i).getUserId(), cart.get(i).getProductId(), cart.get(i).getCount());
-
         } catch (Exception e) {
 
+        } finally {
+            String destination = userController.getMobileByUserId(user);
+            smsController.sendOrderSms(destination, "Thank you for your order. Your order with ID: " + orderId.toString() + " will be forwarded for approval");
         }
     }
 

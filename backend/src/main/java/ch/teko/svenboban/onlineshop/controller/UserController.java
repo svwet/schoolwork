@@ -26,8 +26,10 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
        return userRepository.findIdByName(username);
+    }
 
-
+    public String getMobileByUserId(int userId) {
+        return userRepository.getMobileByUserId(userId);
     }
 
 
