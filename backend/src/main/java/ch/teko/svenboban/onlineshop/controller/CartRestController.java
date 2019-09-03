@@ -3,13 +3,10 @@ package ch.teko.svenboban.onlineshop.controller;
 import ch.teko.svenboban.onlineshop.model.Cart;
 import ch.teko.svenboban.onlineshop.repository.CartRepository;
 import ch.teko.svenboban.onlineshop.repository.OrderRepository;
-import ch.teko.svenboban.onlineshop.services.SmsSenderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,8 +89,10 @@ public class CartRestController {
 
         try {
             List<Cart> cart = cartRepository.getAllByUserId(user);
-            for (int i = 0; i < cart.size(); i++)
+            for (int i = 0; i < cart.size(); i++) {
                 orderRepository.checkout(orderId, cart.get(i).getUserId(), cart.get(i).getProductId(), cart.get(i).getCount());
+            }
+            cartRepository.deleteAllByUserId(user);
         } catch (Exception e) {
 
         } finally {

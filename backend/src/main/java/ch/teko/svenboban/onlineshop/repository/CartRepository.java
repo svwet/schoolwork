@@ -26,6 +26,9 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Query(value = "delete from CART where USER_ID =:userId and PRODUCT_ID =:productId AND COUNT =:count", nativeQuery = true)
     int dropProductFromCart(@Param("userId")int userId, @Param("productId")int productId, @Param("count")int count);
 
+    @Transactional
+    void deleteAllByUserId(int userId);
+
     @Modifying
     @Transactional
     @Query(value = "update CART set count = count + 1 where USER_ID =:userId and PRODUCT_ID =:productId", nativeQuery = true)
