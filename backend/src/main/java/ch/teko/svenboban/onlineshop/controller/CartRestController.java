@@ -1,10 +1,14 @@
 package ch.teko.svenboban.onlineshop.controller;
 
 import ch.teko.svenboban.onlineshop.model.Cart;
+import ch.teko.svenboban.onlineshop.model.Product;
 import ch.teko.svenboban.onlineshop.repository.CartRepository;
 import ch.teko.svenboban.onlineshop.repository.OrderRepository;
+import ch.teko.svenboban.onlineshop.repository.ProductRepository;
+import ch.teko.svenboban.onlineshop.services.SmsSender;
+import ch.teko.svenboban.onlineshop.services.UserService;
+import ch.teko.svenboban.onlineshop.transfer.CartTo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +17,7 @@ import java.util.List;
  * @author sven.wetter@edu.teko.ch
  */
 @RestController
+@RequestMapping(value = "/cart")
 public class CartRestController {
 
     private CartRepository cartRepository;
@@ -32,13 +37,20 @@ public class CartRestController {
         this.cartRepository = cartRepository;
     }
 
-    @GetMapping("/getCart")
-    public List<Cart> getCart() {
-        int user = userController.getCurrentUser();
-        return cartRepository.getCartByUserId(user);
+    @GetMapping
+    public List<CartTo> getCart() {
+        List<CartTo> cartTos = new ArrayList<>();
+        int currentUserId = userService.getCurrentUserId();
+        List<Cart> cartByUserId = cartRepository.findAllByUserId(currentUserId);
+        for (Cart cart : cartByUserId) {
+            Product product = productRepository.findById(cart.getProductId()).orElse(null);
+            int count = cart.getCount();
+            cartTos.add(new CartTo().setCount(count).setProduct(product));
+        }
+        return cartTos;
     }
 
-    @RequestMapping(value = "/addToCart", method = RequestMethod.POST, consumes = "application/json")
+    @PostMapping
     @ResponseBody
     public void saveCart(@RequestBody ArrayList<Cart> cart) {
         Integer valueCheck;
@@ -57,7 +69,7 @@ public class CartRestController {
         }
     }
 
-    @RequestMapping(value = "/dropFromCart", method = RequestMethod.POST, consumes = "application/json")
+    @DeleteMapping
     @ResponseBody
     public void dropProductFromCart(@RequestBody ArrayList<Cart> cart) {
         Integer valueCheck;

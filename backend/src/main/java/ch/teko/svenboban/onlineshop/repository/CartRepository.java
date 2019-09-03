@@ -17,16 +17,11 @@ import java.util.List;
 public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Modifying
     @Transactional
-    @Query(value = "insert into CART(USER_ID, PRODUCT_ID, COUNT) values(:userId, :productId, :count)", nativeQuery = true)
-    int saveAll(@Param("userId")int userId, @Param("productId")int productId, @Param("count")int count);
-
-    @Modifying
-    @Transactional
-    @Query(value = "delete from CART where USER_ID =:userId and PRODUCT_ID =:productId AND COUNT =:count", nativeQuery = true)
-    int dropProductFromCart(@Param("userId")int userId, @Param("productId")int productId, @Param("count")int count);
+    @Query(value = "delete from CART where USER_ID =:userId and PRODUCT_ID =:productId", nativeQuery = true)
+    void dropProductFromCart(@Param("userId")int userId, @Param("productId")int productId);
 
     @Transactional
-    void deleteAllByUserId(int userId);
+    void removeByUserId(int userId);
 
     @Modifying
     @Transactional
@@ -44,6 +39,6 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
 
     List<Cart> getAllByUserId(int userId);
 
-    List<Cart> getCartByUserId(int userId);
+    List<Cart> findAllByUserId(int userId);
 
 }

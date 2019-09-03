@@ -2,13 +2,19 @@ package ch.teko.svenboban.onlineshop.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 /**
  * @author sven.wetter@edu.teko.ch
  */
 @Entity(name = "CART")
 public class Cart {
+
     @Id
+    @GeneratedValue
+    @Column (name = "CART_ID")
+    private int cartId;
+
     @Column(name = "USER_ID")
     private int userId;
 
@@ -16,8 +22,16 @@ public class Cart {
     private int productId;
 
     @Column(name = "Count")
-    private int count;
+    private int count = 1;
 
+    public int getCartId() {
+        return cartId;
+    }
+
+    public Cart setCartId(int cartId) {
+        this.cartId = cartId;
+        return this;
+    }
     public int getUserId() {
         return userId;
     }

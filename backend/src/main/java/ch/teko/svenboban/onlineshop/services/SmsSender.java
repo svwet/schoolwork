@@ -5,5 +5,5 @@ package ch.teko.svenboban.onlineshop.services;
  */
 
 public interface SmsSender {
-    void send();
+    void send(String message);
 }
