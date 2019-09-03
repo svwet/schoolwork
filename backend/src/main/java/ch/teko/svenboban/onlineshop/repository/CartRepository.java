@@ -6,14 +6,13 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author sven.wetter@edu.teko.ch
  */
+
 @Repository
 public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Modifying

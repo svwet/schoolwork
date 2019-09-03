@@ -4,7 +4,6 @@ import ch.teko.svenboban.onlineshop.services.SmsSenderImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-
 /**
  * @author sven.wetter@edu.teko.ch
  */

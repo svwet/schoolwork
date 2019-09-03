@@ -15,6 +15,7 @@ import java.util.Map;
  * @author sven.wetter@edu.teko.ch
  */
 
+
 @Service
 public class SmsSenderImpl implements SmsSender {
     private static final String URL = "https://messagingproxy.swisscom.ch:4300/rest/1.0.0/submit_sm/87749";
@@ -37,10 +38,6 @@ public class SmsSenderImpl implements SmsSender {
         this.restTemplate = restTemplate;
     }
 
-    /**
-     * Sends a Short Message through Swisscom Large Account.
-     * @return returns json response
-     */
     public void send() {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));

@@ -1,6 +1,5 @@
 package ch.teko.svenboban.onlineshop.Configuration;
 
-
 import org.h2.server.web.WebServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

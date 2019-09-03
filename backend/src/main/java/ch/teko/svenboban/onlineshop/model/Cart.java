@@ -2,7 +2,6 @@ package ch.teko.svenboban.onlineshop.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 /**
  * @author sven.wetter@edu.teko.ch

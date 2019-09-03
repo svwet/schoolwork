@@ -35,7 +35,6 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
                 "select username, authority from authority where username= ?").passwordEncoder(passwordEncoder());
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http

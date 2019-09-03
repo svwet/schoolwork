@@ -6,8 +6,6 @@ import ch.teko.svenboban.onlineshop.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,6 @@ public class CartRestController {
         this.cartRepository = cartRepository;
     }
 
-
     @GetMapping("/getCart")
     public List<Cart> getCart() {
         int user = userController.getCurrentUser();
@@ -45,13 +42,14 @@ public class CartRestController {
     @ResponseBody
     public void saveCart(@RequestBody ArrayList<Cart> cart) {
         Integer valueCheck;
+        int user = userController.getCurrentUser();
         try {
             for (int i = 0; i < cart.size(); i++) {
-                valueCheck = cartRepository.checkCart(cart.get(i).getUserId(), cart.get(i).getProductId());
+                valueCheck = cartRepository.checkCart(user, cart.get(i).getProductId());
                 if (valueCheck == null) {
-                    cartRepository.saveAll(cart.get(i).getUserId(), cart.get(i).getProductId(), 1);
+                    cartRepository.saveAll(user, cart.get(i).getProductId(), 1);
                 } else {
-                    cartRepository.updateAdd(cart.get(i).getUserId(), cart.get(i).getProductId());
+                    cartRepository.updateAdd(user, cart.get(i).getProductId());
                 }
             }
         } catch (Exception e) {
@@ -63,13 +61,14 @@ public class CartRestController {
     @ResponseBody
     public void dropProductFromCart(@RequestBody ArrayList<Cart> cart) {
         Integer valueCheck;
+        int user = userController.getCurrentUser();
         try {
             for (int i = 0; i < cart.size(); i++) {
-                valueCheck = cartRepository.checkCart(cart.get(i).getUserId(), cart.get(i).getProductId());
+                valueCheck = cartRepository.checkCart(user, cart.get(i).getProductId());
                 if (valueCheck == null) {
-                    cartRepository.dropProductFromCart(cart.get(i).getUserId(), cart.get(i).getProductId(), 1);
+                    cartRepository.dropProductFromCart(user, cart.get(i).getProductId(), 1);
                 } else {
-                    cartRepository.updateAdd(cart.get(i).getUserId(), cart.get(i).getProductId());
+                    cartRepository.updateAdd(user, cart.get(i).getProductId());
                 }
             }
         } catch (Exception e) {
@@ -81,6 +80,7 @@ public class CartRestController {
     public void checkout() {
         Integer orderId = null;
         int user = userController.getCurrentUser();
+
         try {
             orderId = orderRepository.getOrderId();
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class CartRestController {
 
         } finally {
             String destination = userController.getMobileByUserId(user);
-            smsController.sendOrderSms(destination, "Thank you for your order. Your order with ID: " + orderId.toString() + " will be forwarded for approval");
+            smsController.sendOrderSms(destination, "Thank you for your order. Your order with ID: " + orderId.toString() + " will be forwarded for approval.");
         }
     }
 
