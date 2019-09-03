@@ -17,12 +17,11 @@ import java.util.List;
 @RestController
 public class CartRestController {
 
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
 
     @Autowired
     @Qualifier("RepoOrder")
     OrderRepository orderRepository;
-
 
     @Autowired
     UserController userController;
@@ -33,6 +32,13 @@ public class CartRestController {
     @Autowired
     public CartRestController(CartRepository cartRepository) {
         this.cartRepository = cartRepository;
+    }
+
+
+    @GetMapping("/getCart")
+    public List<Cart> getCart() {
+        int user = userController.getCurrentUser();
+        return cartRepository.getCartByUserId(user);
     }
 
     @RequestMapping(value = "/addToCart", method = RequestMethod.POST, consumes = "application/json")
