@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="list"></ion-back-button>
+            <ion-back-button defaultHref="overview"></ion-back-button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
@@ -17,11 +17,11 @@
                 <ion-icon name="star-half"></ion-icon>
                 (34)
             </ion-card-subtitle>
-            <ion-card-title>{{product?.name}} - <small>{{product?.price}} Chf</small></ion-card-title>
+            <ion-card-title>{{product?.shortDescription}} - <small>{{product?.price}} Chf</small></ion-card-title>
         </ion-card-header>
 
         <ion-card-content>
-            {{product?.description}}
+            {{product?.longDescription}}
         </ion-card-content>
 
         <ion-slides pager="true">
@@ -35,6 +35,11 @@
                 <img src="https://static.digitecgalaxus.ch/Files/8/2/4/9/6/5/4/Braves_Pike_Silver_CoreSet_Front_Right_Branded_NT.jpg?fit=inside%7C828:414&output-format=progressive-jpeg">
             </ion-slide>
         </ion-slides>
+        <ion-buttons>
+            <ion-button (click)="addToCart(product?.productId)">
+                <ion-icon slot="icon-only" name="cart"></ion-icon>
+            </ion-button>
+        </ion-buttons>
 
     </ion-card>
 </ion-content>

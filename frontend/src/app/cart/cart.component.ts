@@ -1,10 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Product} from "../product/product";
 import {ToastController} from "@ionic/angular";
 import {CartService} from "../commons/cart.service";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
 import {BaseComponent} from "../commons/base.component";
+import {Cart} from "./cart";
 
 @Component({
     selector: 'app-cart',
@@ -13,24 +13,13 @@ import {BaseComponent} from "../commons/base.component";
 })
 export class CartComponent extends BaseComponent implements OnInit {
 
-    itemsInCart: Product[];
+    itemsInCart: Cart[];
 
     constructor(private cartService: CartService, public toastController: ToastController) {
         super(toastController);
     }
 
     ngOnInit(): void {
-        this.subscribeGetCartContent();
-        this.getCartContent();
-    }
-
-    calculateTotal() {
-        if (this.itemsInCart) {
-            return this.itemsInCart.map(item => item.price).reduce((a, b) => a + b, 0);
-        }
-    }
-
-    private subscribeGetCartContent() {
         this.cartService.getCart().pipe(
             catchError(err => {
                 this.presentToast(err);
@@ -39,9 +28,28 @@ export class CartComponent extends BaseComponent implements OnInit {
         ).subscribe(
             value => this.itemsInCart = value
         );
+        this.getCartContent();
+    }
+
+    calculateTotal() {
+        if (this.itemsInCart) {
+            return this.itemsInCart.reduce((a, b) => a + (b.count * b.product.price), 0)
+        }
+    }
+
+    calculateTotalOfRow(item: Cart) {
+        return item.count * item.product.price;
     }
 
     private getCartContent() {
         this.cartService.getCart();
+    }
+
+    checkout() {
+        this.cartService.checkOut();
+    }
+
+    clean() {
+        console.log('not yet implemented....')
     }
 }

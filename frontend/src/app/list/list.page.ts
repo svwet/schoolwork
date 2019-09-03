@@ -26,7 +26,7 @@ export class ListPage extends BaseComponent implements OnInit {
     }
 
     openProduct(product: Product) {
-        this.navCtrl.navigateRoot('/product/' + product.id);
+        this.navCtrl.navigateRoot('/productDetails/' + product.productId);
     }
 
     async presentModal() {

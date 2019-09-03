@@ -27,8 +27,8 @@ export class ProductPage extends BaseComponent implements OnInit {
         this.productService.getProductById(this.productId);
     }
 
-    addToCart(item) {
-        this.cartService.addToCart(item);
+    addToCart(productId: number) {
+        this.cartService.addToCart(productId);
     }
 
     private subscribeGetProductById() {

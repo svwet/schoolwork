@@ -5,3 +5,8 @@ export interface Product {
     longDescription: string;
     price: number;
 }
+
+export interface Cart {
+    product: Product;
+    count: number;
+}
