@@ -1,33 +1,34 @@
-package ch.teko.svenboban.onlineshop.controller;
+package ch.teko.svenboban.onlineshop.services;
 
 import ch.teko.svenboban.onlineshop.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 /**
  * @author: Petrovic Boban
  **/
-@RestController
-public class UserController {
+@Service
+public class UserServiceImpl implements UserService {
 
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public int getCurrentUser() {
+    @Override
+    public int getCurrentUserId() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
-       return userRepository.findIdByName(username);
+        return userRepository.findIdByName(username);
     }
 
-    public String getMobileByUserId(int userId) {
-        return userRepository.getMobileByUserId(userId);
+    @Override
+    public String getMobileFromCurrentUser() {
+        return userRepository.getMobileByUserId(getCurrentUserId());
     }
-
 
 }

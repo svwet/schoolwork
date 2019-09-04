@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ToastController} from "@ionic/angular";
+import {ModalController, ToastController} from "@ionic/angular";
 import {CartService} from "../commons/cart.service";
 import {catchError} from "rxjs/operators";
 import {of} from "rxjs";
@@ -15,7 +15,7 @@ export class CartComponent extends BaseComponent implements OnInit {
 
     itemsInCart: Cart[];
 
-    constructor(private cartService: CartService, public toastController: ToastController) {
+    constructor(private cartService: CartService, public toastController: ToastController,  public modalCtrl: ModalController) {
         super(toastController);
     }
 
@@ -47,9 +47,11 @@ export class CartComponent extends BaseComponent implements OnInit {
 
     checkout() {
         this.cartService.checkOut();
+        this.modalCtrl.dismiss();
     }
 
-    clean() {
-        console.log('not yet implemented....')
+    dropProductFromCart(productId: number) {
+        this.cartService.dropProductFromCart(productId);
+        this.modalCtrl.dismiss();
     }
 }

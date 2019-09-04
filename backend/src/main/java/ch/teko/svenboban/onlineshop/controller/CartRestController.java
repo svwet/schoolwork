@@ -9,9 +9,13 @@ import ch.teko.svenboban.onlineshop.services.SmsSender;
 import ch.teko.svenboban.onlineshop.services.UserService;
 import ch.teko.svenboban.onlineshop.transfer.CartTo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author sven.wetter@edu.teko.ch
@@ -20,21 +24,19 @@ import java.util.List;
 @RequestMapping(value = "/cart")
 public class CartRestController {
 
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final UserService userService;
+    private final SmsSender smsSender;
 
     @Autowired
-    @Qualifier("RepoOrder")
-    OrderRepository orderRepository;
-
-    @Autowired
-    UserController userController;
-
-    @Autowired
-    SmsController smsController;
-
-    @Autowired
-    public CartRestController(CartRepository cartRepository) {
+    public CartRestController(CartRepository cartRepository, OrderRepository orderRepository, ProductRepository productRepository, UserService userService, SmsSender smsSender) {
         this.cartRepository = cartRepository;
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
+        this.userService = userService;
+        this.smsSender = smsSender;
     }
 
     @GetMapping
@@ -52,71 +54,52 @@ public class CartRestController {
 
     @PostMapping
     @ResponseBody
-    public void saveCart(@RequestBody ArrayList<Cart> cart) {
-        Integer valueCheck;
-        int user = userController.getCurrentUser();
-        try {
-            for (int i = 0; i < cart.size(); i++) {
-                valueCheck = cartRepository.checkCart(user, cart.get(i).getProductId());
-                if (valueCheck == null) {
-                    cartRepository.saveAll(user, cart.get(i).getProductId(), 1);
-                } else {
-                    cartRepository.updateAdd(user, cart.get(i).getProductId());
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+    public Cart addToCart(@RequestBody Integer productId) {
+        int currentUserId = userService.getCurrentUserId();
+        boolean isProductAlreadyAdded = isProductAlreadyAdded(currentUserId, productId);
+        if (isProductAlreadyAdded) {
+            cartRepository.updateAdd(currentUserId, productId);
+        } else {
+            Cart cart = new Cart();
+            cart.setProductId(productId);
+            cart.setUserId(currentUserId);
+            return cartRepository.save(cart);
         }
+        return null;
     }
 
-    @DeleteMapping
+    @PostMapping("/dropProductFromCart")
     @ResponseBody
-    public void dropProductFromCart(@RequestBody ArrayList<Cart> cart) {
-        Integer valueCheck;
-        int user = userController.getCurrentUser();
-        try {
-            for (int i = 0; i < cart.size(); i++) {
-                valueCheck = cartRepository.checkCart(user, cart.get(i).getProductId());
-                if (valueCheck == null) {
-                    cartRepository.dropProductFromCart(user, cart.get(i).getProductId(), 1);
-                } else {
-                    cartRepository.updateAdd(user, cart.get(i).getProductId());
-                }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+    public ResponseEntity dropProductFromCart(@RequestBody Integer productId) {
+        int currentUserId = userService.getCurrentUserId();
+        boolean isProductAlreadyAdded = isProductAlreadyAdded(currentUserId, productId);
+        if (isProductAlreadyAdded) {
+            cartRepository.dropProductFromCart(currentUserId, productId);
         }
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
     @GetMapping("/checkout")
-    public void checkout() {
-        Integer orderId = null;
-        int user = userController.getCurrentUser();
-
-        try {
-            orderId = orderRepository.getOrderId();
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-
+    public ResponseEntity<HttpStatus> checkout() {
+        int currentUserId = userService.getCurrentUserId();
+        Integer orderId = orderRepository.getOrderId();
+        List<Cart> carts = cartRepository.getAllByUserId(currentUserId);
         if (orderId == null) {
             orderId = 1;
         } else {
             orderId = orderId+1;
         }
-
-        try {
-            List<Cart> cart = cartRepository.getAllByUserId(user);
-            for (int i = 0; i < cart.size(); i++) {
-                orderRepository.checkout(orderId, cart.get(i).getUserId(), cart.get(i).getProductId(), cart.get(i).getCount());
-            }
-            cartRepository.deleteAllByUserId(user);
-        } catch (Exception e) {
-
-        } finally {
-            String destination = userController.getMobileByUserId(user);
-            smsController.sendOrderSms(destination, "Thank you for your order. Your order with ID: " + orderId.toString() + " will be forwarded for approval.");
+        for (Cart cart : carts) {
+            orderRepository.checkout(orderId, cart.getUserId(), cart.getProductId(), cart.getCount());
         }
+        cartRepository.removeByUserId(currentUserId);
+        String message = "Thank you for your order. Your order with ID: " + orderId.toString() + " will be forwarded for approval.";
+        smsSender.send(message);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    private boolean isProductAlreadyAdded(int currentUserId, Integer productId) {
+        Optional<Integer> valueCheck = Optional.ofNullable(cartRepository.checkCart(currentUserId, productId));
+        return valueCheck.isPresent() && valueCheck.get() > 0;
+    }
 }

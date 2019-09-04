@@ -2,7 +2,6 @@
     <ion-toolbar>
         <ion-buttons slot="end">
             <ion-button (click)="presentModal()">
-                <ion-badge *ngIf="itemsInCart?.length">{{itemsInCart?.length}}</ion-badge>
                 <ion-icon name="cart"></ion-icon>
             </ion-button>
         </ion-buttons>
@@ -14,7 +13,7 @@
 
 <ion-content>
     <ion-card (click)="openProduct(product)" *ngFor="let product of products"
-              style="display: inline-block; width: 200px"
+              style="display: inline-block; width: 250px"
               tappable>
         <ion-card-header>
             <ion-card-subtitle style="color: #ff4648"><b>{{product.price}}</b> Chf</ion-card-subtitle>

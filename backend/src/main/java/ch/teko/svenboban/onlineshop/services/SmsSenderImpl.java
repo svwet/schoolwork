@@ -28,17 +28,17 @@ public class SmsSenderImpl implements SmsSender {
     private static final String USERNAME = "87749";
     private static final String ALPHANUMERIC = "TEKO";
     private static final InetSocketAddress HOST = new InetSocketAddress("217.192.8.32", 4300);
-    private String message;
-    private String destination;
 
     private final RestTemplate restTemplate;
+    private final UserService userService;
 
     @Autowired
-    public SmsSenderImpl(RestTemplate restTemplate) {
+    public SmsSenderImpl(RestTemplate restTemplate, UserService userService) {
         this.restTemplate = restTemplate;
+        this.userService = userService;
     }
 
-    public void send() {
+    public void send(String message) {
         HttpHeaders headers = new HttpHeaders();
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -46,22 +46,12 @@ public class SmsSenderImpl implements SmsSender {
         headers.setHost(HOST);
 
         Map<String, Object> data = new HashMap<>();
-        data.put(DESTINATION_ADDR, destination);
+        data.put(DESTINATION_ADDR, userService.getMobileFromCurrentUser());
         data.put(SOURCE_ADDR, ALPHANUMERIC);
         data.put(SOURCE_ADDR_TON, SOURCE_ADDR_TON_VALUE);
         data.put(SHORT_MESSAGE, message);
 
         HttpEntity<Map> request = new HttpEntity<>(data, headers);
         restTemplate.postForObject(URL, request, String.class);
-    }
-
-    public SmsSenderImpl setMessage(String message) {
-        this.message = message;
-        return this;
-    }
-
-    public SmsSenderImpl setDestination(String destination) {
-        this.destination = destination;
-        return this;
     }
 }

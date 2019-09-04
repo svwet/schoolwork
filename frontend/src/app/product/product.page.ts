@@ -24,6 +24,7 @@ export class ProductPage extends BaseComponent implements OnInit {
     ngOnInit() {
         this.productId = this.activatedRoute.snapshot.paramMap.get('productId');
         this.subscribeGetProductById();
+        this.subscribeGetProductById();
         this.productService.getProductById(this.productId);
     }
 

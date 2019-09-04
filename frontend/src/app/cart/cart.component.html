@@ -7,19 +7,29 @@
 
 <ion-content>
     <ion-list>
-        <ion-item *ngFor="let item of itemsInCart" lines="inset">
-            {{ item.count }}x {{ item.product.name }} - {{ item.product.price | currency:'CHF':'symbol' }}
-            <ion-label slot="end" text-right>{{ calculateTotalOfRow(item) | currency:'CHF':'symbol' }}</ion-label>
-        </ion-item>
+        <ion-item-sliding *ngFor="let item of itemsInCart">
+
+            <ion-item lines="inset">
+                {{ item.count }} x {{ item.product.name }} - {{ item.product.price | currency:'CHF':'symbol' }}
+                <ion-label slot="end" text-right>{{ calculateTotalOfRow(item) | currency:'CHF':'symbol' }}</ion-label>
+            </ion-item>
+
+            <ion-item-options side="end">
+                <ion-item-option (click)="dropProductFromCart(item.product.productId)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-item-option>
+
+            </ion-item-options>
+        </ion-item-sliding>
+
         <ion-item>
-            Total: <span slot="end">{{ calculateTotal() | currency:'CHF':'symbol' }}</span>
+            <b>Total</b> <span slot="end">{{ calculateTotal() | currency:'CHF':'symbol' }}</span>
         </ion-item>
     </ion-list>
 </ion-content>
 
 <ion-footer>
     <ion-toolbar>
-        <ion-button (click)="checkout()"> Kaufen </ion-button>
-        <ion-button color="danger" (click)="clean()"> Leeren</ion-button>
+        <ion-button expand="block" (click)="checkout()"> Kaufen</ion-button>
     </ion-toolbar>
 </ion-footer>
