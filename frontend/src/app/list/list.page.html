@@ -1,22 +1,33 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="end">
-            <ion-button (click)="presentModal()">
+            <ion-button style="text-transform:none" color="primary" fill="outline" (click)="presentCartModal()">
                 <ion-icon name="cart"></ion-icon>
+                Warenkorb
+            </ion-button>
+            <ion-button style="text-transform:none" color="danger" fill="outline" href="./logout">
+                <ion-icon name="log-out"></ion-icon>
+                Abmelden
             </ion-button>
         </ion-buttons>
-
-        <ion-title>{{products?.length}} Produkte</ion-title>
+        <ion-title>{{filteredProducts?.length}} Produkte</ion-title>
     </ion-toolbar>
 
 </ion-header>
 
 <ion-content>
-    <ion-card (click)="openProduct(product)" *ngFor="let product of products"
+    <ion-searchbar [(ngModel)]="searchBarValue"
+                   (ionChange)="filterItems()" (ionCancel)="reset()" showCancelButton="always"
+                   placeholder="Nach Produktnamen oder Beschreibung suchen"></ion-searchbar>
+
+    <ion-card (click)="openProduct(product)" *ngFor="let product of filteredProducts"
               style="display: inline-block; width: 250px"
               tappable>
+        <img src="{{'/' + product.productId + '_' + '1.jpg'}}"
+             style=" height: 200px;padding: 20px; object-fit: contain;"/>
+
         <ion-card-header>
-            <ion-card-subtitle style="color: #ff4648"><b>{{product.price}}</b> Chf</ion-card-subtitle>
+            <ion-card-subtitle style="color: #ff4648"><b>{{product.price}}</b> .-</ion-card-subtitle>
             <ion-card-title>{{product.name}}</ion-card-title>
         </ion-card-header>
     </ion-card>

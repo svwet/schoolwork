@@ -21,7 +21,7 @@ import java.util.Optional;
  * @author sven.wetter@edu.teko.ch
  */
 @RestController
-@RequestMapping(value = "/cart")
+@RequestMapping(value = "api/cart")
 public class CartRestController {
 
     private final CartRepository cartRepository;

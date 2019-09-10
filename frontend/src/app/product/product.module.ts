@@ -5,7 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {IonicModule} from '@ionic/angular';
 import {ProductPage} from './product.page';
-import {CommonsModule} from "../commons/commons.module";
+import {CommonsModule} from '../commons/commons.module';
 
 const routes: Routes = [
     {

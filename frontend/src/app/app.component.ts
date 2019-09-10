@@ -9,7 +9,7 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
     templateUrl: 'app.component.html'
 })
 export class AppComponent {
-    public static readonly REST_BASE_URL = 'http://localhost:8080';
+    public static readonly REST_BASE_URL = '/api';
 
     constructor(
         private platform: Platform,

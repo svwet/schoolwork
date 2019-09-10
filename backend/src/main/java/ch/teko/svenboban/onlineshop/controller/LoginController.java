@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 
 @Controller
+@RequestMapping(value = "api")
 public class LoginController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)

@@ -5,8 +5,8 @@ import {IonicModule} from '@ionic/angular';
 import {RouterModule} from '@angular/router';
 
 import {ListPage} from './list.page';
-import {CommonsModule} from "../commons/commons.module";
-import {CartComponent} from "../cart/cart.component";
+import {CommonsModule} from '../commons/commons.module';
+import {CartComponent} from '../cart/cart.component';
 
 @NgModule({
     imports: [
