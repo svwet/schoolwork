@@ -1,9 +1,5 @@
 # Projektarbeit
 
-> **Authors** 
->
-> -  Sven Wetter 	- sven.wetter@edu.teko.ch
-> -  Petrovic Boban	 - boban_96@hotmail.de
 
 
 
