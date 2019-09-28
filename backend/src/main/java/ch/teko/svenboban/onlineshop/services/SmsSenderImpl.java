@@ -18,16 +18,16 @@ import java.util.Map;
 
 @Service
 public class SmsSenderImpl implements SmsSender {
-    private static final String URL = "https://messagingproxy.swisscom.ch:4300/rest/1.0.0/submit_sm/87749";
+    private static final String URL = "https://connector.example.com:4300/rest/1.0.0/submit_sm/1234";
     private static final String PASSWORD = "Br94vera";
     private static final String DESTINATION_ADDR = "destination_addr";
     private static final String SOURCE_ADDR = "source_addr";
     private static final String SOURCE_ADDR_TON = "source_addr_ton";
     private static final Integer SOURCE_ADDR_TON_VALUE = 5;
     private static final String SHORT_MESSAGE = "short_message";
-    private static final String USERNAME = "87749";
+    private static final String USERNAME = "1234"; // Enter Short ID
     private static final String ALPHANUMERIC = "TEKO";
-    private static final InetSocketAddress HOST = new InetSocketAddress("217.192.8.32", 4300);
+    private static final InetSocketAddress HOST = new InetSocketAddress("123.45.67.89", 4300); //Enter IP Adress
 
     private final RestTemplate restTemplate;
     private final UserService userService;
